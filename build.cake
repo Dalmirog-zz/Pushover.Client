@@ -54,7 +54,7 @@ Task("Restore")
   .Does(() =>
 {
     Information("Restoring packages for [{0}]", solutionFile);
-    NuGetRestore(solutionFile);
+    DotNetCoreRestore(solutionFile);
 });
 
 Task("DotNetPublish")
