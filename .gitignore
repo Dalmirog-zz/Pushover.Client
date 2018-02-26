@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Cake tools
+tools/
+
+# publishDir
+build/
+
 # User-specific files
 *.suo
 *.user
@@ -23,6 +29,9 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+
+# VS Code cache/options directory
+.vscode/
 
 # Visual Studio 2015 cache/options directory
 .vs/
