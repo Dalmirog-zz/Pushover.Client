@@ -18,23 +18,6 @@ var testsProjectfile = "./source/Pushover.Client.Tests/Pushover.Client.Tests.csp
 var clientOutputDirectory = MakeAbsolute(Directory("./build/Pushover.Client")).ToString();
 var testsOutputDirectory = MakeAbsolute(Directory("./build/Pushover.Client.Tests")).ToString();
 
-
-///////////////////////////////////////////////////////////////////////////////
-// SETUP / TEARDOWN
-///////////////////////////////////////////////////////////////////////////////
-
-Setup(ctx =>
-{
-   // Executed BEFORE the first task.
-   Information("Running tasks...");
-});
-
-Teardown(ctx =>
-{
-   // Executed AFTER the last task.
-   Information("Finished running tasks.");
-});
-
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,29 +54,29 @@ Task("DotNetPublish")
     Information("Running dotnet publish for Client project...");
     DotNetCorePublish(clientProjectfile, clientNetCoreSettings);
 
-    // var testsNetCoreSettings = new DotNetCorePublishSettings
-    // {
-    //     Configuration = configuration,
-    //     OutputDirectory = testsOutputDirectory,
-    //     NoRestore = true
-    // };
+    var testsNetCoreSettings = new DotNetCorePublishSettings
+    {
+        Configuration = configuration,
+        OutputDirectory = testsOutputDirectory,
+        NoRestore = true
+    };
 
-    // Information("Running dotnet publish for Tests project...");
-    // DotNetCorePublish(testsProjectfile, testsNetCoreSettings);
+    Information("Running dotnet publish for Tests project...");
+    DotNetCorePublish(testsProjectfile, testsNetCoreSettings);
 });
 
 Task("Test")
   .IsDependentOn("DotNetPublish")
   .Does(() =>
 {
-     var settings = new DotNetCoreTestSettings
-     {
-         Configuration = "Release",
-         ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResults.xml\""),
-         ResultsDirectory = testsOutputDirectory
-     };
+    var settings = new DotNetCoreTestSettings
+    {
+        Configuration = "Release",
+        ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResults.xml\""),
+        ResultsDirectory = testsOutputDirectory
+    };
 
-     DotNetCoreTest(testsProjectfile, settings);
+    DotNetCoreTest(testsProjectfile, settings);
 });
 
 // Task("PublishTestResult")
